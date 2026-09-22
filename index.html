@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volfied Grid-Based </title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        canvas {
+            border: 3px solid #444;
+            background-color: #000000;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Grid-Based Area Capture (300x200)</h1>
+    
+    <!--  We got 300x200 Grid cell . If we scale it 4px every cell Canvas will be 1200x800 px . -->
+    <canvas id="gameCanvas" width="1200" height="800"></canvas>
+
+    <script type="module" src="src/js/game.js"></script>
+</body>
+</html>
