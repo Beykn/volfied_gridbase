@@ -119,8 +119,14 @@ export class Grid{
                 if (this.matrix[r][c] === STATE_EDGE) {
                     let hasEmptyNeighbor = false;
                     const neighbors = [
-                        { r: r + 1, c }, { r: r - 1, c },
-                        { r, c: c + 1 }, { r, c: c - 1 }
+                        { r: r - 1, c: c },     
+                        { r: r + 1, c: c },     
+                        { r: r, c: c - 1 },    
+                        { r: r, c: c + 1 },     
+                        { r: r - 1, c: c - 1 }, 
+                        { r: r - 1, c: c + 1 }, 
+                        { r: r + 1, c: c - 1 }, 
+                        { r: r + 1, c: c + 1 }
                     ];
 
                     for (let n of neighbors) {
