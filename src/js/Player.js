@@ -67,10 +67,8 @@ export class Player {
     }
 
     completeDrawing(grid) {
-        // Generate a new edge with new points
-        for (let pt of this.pathArray) {
-            grid.setState(pt.x, pt.y, STATE_EDGE);
-        }
+        
+        grid.completeAreaCapture();
 
         this.pathArray = [];
         this.protection = true;
