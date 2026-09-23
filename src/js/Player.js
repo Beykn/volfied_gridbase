@@ -20,6 +20,7 @@ export class Player {
         else if (keys.ArrowLeft) dx = -1;
         else if (keys.ArrowRight) dx = 1;
 
+        //if no keys
         if (dx === 0 && dy === 0) return;
 
         const nextX = this.x + dx;
@@ -32,6 +33,12 @@ export class Player {
             return;
         }
 
+        //RULE: If player go to game zone(STATE_EMPTY) player should the use space 
+        if (targetState === STATE_EMPTY && !keys.Space) {
+            return; 
+        }
+        
+    
         // STAGE 1: Protection on (SAFE ZONE)
         if (this.protection) {
             if (targetState === STATE_EDGE) {
@@ -39,6 +46,11 @@ export class Player {
                 this.y = nextY;
             }
             else if (targetState === STATE_EMPTY) {
+
+                if (targetState === STATE_EMPTY && !keys.Space) {
+                    return; // It does not move unless the "space"  is held down
+                }
+
                 this.protection = false;
                 this.x = nextX;
                 this.y = nextY;
@@ -51,12 +63,14 @@ export class Player {
         // STAGE 2: Protection off (GAME ZONE)
         else {
             if (targetState === STATE_EMPTY) {
+
                 this.x = nextX;
                 this.y = nextY;
                 grid.setState(this.x, this.y, STATE_PATH);
                 this.pathArray.push({ x: this.x, y: this.y });
             }
             else if (targetState === STATE_EDGE || targetState === STATE_PATH) {
+
                 // Son ulaşılan hücreyi de diziye/grid'e dâhil edip çizimi bitir
                 this.x = nextX;
                 this.y = nextY;

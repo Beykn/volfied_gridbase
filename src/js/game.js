@@ -19,17 +19,27 @@ const player = new Player(0, 0);
 
 // keys
 const keys = {
+    Space: false,
     ArrowUp: false,
     ArrowDown: false,
     ArrowLeft: false,
     ArrowRight: false
+    
 };
 
 window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+        keys.Space = true;
+        e.preventDefault(); 
+    }
     if (keys.hasOwnProperty(e.key)) keys[e.key] = true;
 });
 
 window.addEventListener("keyup", (e) => {
+    if (e.code === "Space") {
+        keys.Space = false;
+        e.preventDefault(); 
+    }
     if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
 });
 
