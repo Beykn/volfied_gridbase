@@ -118,6 +118,7 @@ export class Grid{
             for (let c = 0; c < this.cols; c++) {
                 if (this.matrix[r][c] === STATE_EDGE) {
                     let hasEmptyNeighbor = false;
+                    //8-directional neighbor check to prevent corner blocking
                     const neighbors = [
                         { r: r - 1, c: c },     
                         { r: r + 1, c: c },     

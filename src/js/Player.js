@@ -62,6 +62,21 @@ export class Player {
         }
         // STAGE 2: Protection off (GAME ZONE)
         else {
+            //If player go back the drawing path 
+            if(this.pathArray.length > 1){
+                const prevPoint = this.pathArray[this.pathArray.length - 2];
+
+                if (nextX === prevPoint.x && nextY === prevPoint.y) {
+                    // Remove the last point from the path array and set the grid state back to STATE_EMPTY
+                    grid.setState(this.x, this.y, STATE_EMPTY);
+                    this.pathArray.pop();
+
+                    // Move the player back to the previous point 
+                    this.x = nextX;
+                    this.y = nextY;
+                    return;
+                }
+            }
             if (targetState === STATE_EMPTY) {
 
                 this.x = nextX;

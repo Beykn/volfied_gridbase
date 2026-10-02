@@ -1,5 +1,6 @@
 import { Grid } from './Grid.js';
 import { Player } from './Player.js';
+import { Enemy } from './Enemy.js';
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -15,6 +16,7 @@ canvas.height = (GRID_HEIGHT * CELL_SIZE) + (MARGIN * 2); // 800 + 40 = 840 px
 
 const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
 const player = new Player(0, 0);
+const enemy = new Enemy(150, 100, 15, 5);
 
 
 // keys
@@ -45,6 +47,8 @@ window.addEventListener("keyup", (e) => {
 
 function update() {
     player.update(keys, grid);
+    enemy.update(grid, player);
+    
 }
 
 function draw() {
@@ -56,6 +60,8 @@ function draw() {
     grid.draw(ctx);
 
     player.draw(ctx, CELL_SIZE);
+
+    enemy.draw(ctx, CELL_SIZE);
 
     ctx.restore();
 }
