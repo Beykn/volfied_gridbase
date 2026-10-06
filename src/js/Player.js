@@ -7,6 +7,8 @@ export class Player {
         this.protection = true; // safe or not 
         this.pathArray = [];    // path array
 
+        this.winGame = false; // win game or not
+
         this.size = 30; //player size
     }
 
@@ -107,13 +109,19 @@ export class Player {
 
         const offset = (this.size - cellSize) / 2;
 
-        // Safe green, draw yellow
-        ctx.fillStyle = this.protection ? "#34ef05" : "#ffff00";
+        // Safe green, draw yellow, if win game draw blue
+        if (this.winGame) {
+            ctx.fillStyle = "#00ffee"; 
+        } else {
+            ctx.fillStyle = this.protection ? "#34ef05" : "#ffff00";
+        }
+        
         ctx.fillRect(
             this.x * cellSize - offset, 
             this.y * cellSize - offset, 
             this.size, 
             this.size
         );
+        
     }
 }

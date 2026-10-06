@@ -18,45 +18,76 @@ export class Enemy {
     }
 
     update(grid, player) {
-    //  If there is a bullet on the screen , the enemy does not move
-    if (this.bullets.length > 0) {
-        
-        this.handleShooting(grid, player);
-        return;
-    }
 
-    // There is no bullet on the screen , the enemy can move in a time 
-    if (this.moveTimer > 0) {
-        this.moveTimer--; // enemy movement timer decreases by 1 each frame
-
-        
-        let nextX = this.x + (this.vx / grid.cellSize);
-        let nextY = this.y + (this.vy / grid.cellSize);
-
-        let gridX = Math.floor(nextX);
-        let gridY = Math.floor(nextY);
-
-        // Wall collision detection: If the next cell is solid (EDGE or DEACTIVE), the enemy bounces off and changes direction randomly
-        if (this.isCellSolid(grid, gridX, gridY)) {
-            this.angle = Math.random() * Math.PI * 2;
-            this.vx = Math.cos(this.angle) * this.speed;
-            this.vy = Math.sin(this.angle) * this.speed;
-        } else {
-            // If the next cell is not solid, the enemy moves to the next position
-            this.x = nextX;
-            this.y = nextY;
-        }
-
-        // Check if the enemy collides with the player's path (STATE_PATH). If so, reset the player and clear the path.
-        if (this.checkPathCollision(player.pathArray)) {
-            this.handlePlayerHit(grid, player);
+        //  If there is a bullet on the screen , the enemy does not move
+        if (this.bullets.length > 0) {
+            
+            this.handleShooting(grid, player);
             return;
         }
-    } 
-        // If the movement timer has reached 0 and there are no bullets on the screen, the enemy shoots a new bullet
+
+        // There is no bullet on the screen , the enemy can move in a time 
+        if (this.moveTimer > 0) {
+            this.moveTimer--; // enemy movement timer decreases by 1 each frame
+
+            
+            let nextX = this.x + (this.vx / grid.cellSize);
+            let nextY = this.y + (this.vy / grid.cellSize);
+
+            let gridX = Math.floor(nextX);
+            let gridY = Math.floor(nextY);
+
+            // Wall collision detection: If the next cell is solid (EDGE or DEACTIVE), the enemy bounces off and changes direction randomly
+            if (this.isCellSolid(grid, gridX, gridY)) {
+                this.angle = Math.random() * Math.PI * 2;
+                this.vx = Math.cos(this.angle) * this.speed;
+                this.vy = Math.sin(this.angle) * this.speed;
+            } else {
+                // If the next cell is not solid, the enemy moves to the next position
+                this.x = nextX;
+                this.y = nextY;
+            }
+
+            // Check if the enemy collides with the player's path (STATE_PATH). If so, reset the player and clear the path.
+            if (this.checkPathCollision(player.pathArray)) {
+                this.handlePlayerHit(grid, player);
+                return;
+            }
+        } // If the movement timer has reached 0 and there are no bullets on the screen, the enemy shoots a new bullet
         else if (this.moveTimer <= 0 && this.bullets.length === 0) {
-            this.handleShooting(grid, player); // New bullet is shot
+                this.handleShooting(grid, player); // New bullet is shot
         }
+
+        if(this.checkEnemyLocation(grid, this)){
+            console.log("Enemy is in the deactive area!");
+            player.winGame = true;
+            this.bullets = [];
+
+            return;
+        }
+
+            
+    }
+    
+    checkEnemyLocation(grid, enemy) {
+        // Calculate the size of the enemy in grid cells based on its radius and the grid cell size
+        let enemySizeInGrid = (enemy.radius * 2) / grid.cellSize;
+
+        // Enemy grid coordinations
+        let pointsToCheck = [
+            { x: Math.floor(enemy.x), y: Math.floor(enemy.y) }, 
+            { x: Math.floor(enemy.x + enemySizeInGrid), y: Math.floor(enemy.y) }, 
+            { x: Math.floor(enemy.x), y: Math.floor(enemy.y + enemySizeInGrid) }, 
+            { x: Math.floor(enemy.x + enemySizeInGrid), y: Math.floor(enemy.y + enemySizeInGrid) } 
+        ];
+
+        for (let p of pointsToCheck) {
+            if (grid.getState(p.x, p.y) === 3) { // STATE_DEACTIVE = 3
+                return true; // Deactive area
+            }
+        }
+
+        return false;
     }
 
     isCellSolid(grid, gx, gy) {
@@ -171,6 +202,8 @@ export class Enemy {
         
         
     }
+
+
 
     draw(ctx, cellSize) {
         // Draw Enemy Body (Red/Pink Circle)
