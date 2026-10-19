@@ -12,7 +12,7 @@ export class Player {
         this.size = 30; //player size
     }
 
-    update(keys, grid) {
+    update(keys, grid, enemy) {
         let dx = 0;
         let dy = 0;
 
@@ -37,10 +37,10 @@ export class Player {
 
         //RULE: If player go to game zone(STATE_EMPTY) player should the use space 
         if (targetState === STATE_EMPTY && !keys.Space) {
-            return; 
+            return;
         }
-        
-    
+
+
         // STAGE 1: Protection on (SAFE ZONE)
         if (this.protection) {
             if (targetState === STATE_EDGE) {
@@ -65,7 +65,7 @@ export class Player {
         // STAGE 2: Protection off (GAME ZONE)
         else {
             //If player go back the drawing path 
-            if(this.pathArray.length > 1){
+            if (this.pathArray.length > 1) {
                 const prevPoint = this.pathArray[this.pathArray.length - 2];
 
                 if (nextX === prevPoint.x && nextY === prevPoint.y) {
@@ -92,14 +92,14 @@ export class Player {
                 this.x = nextX;
                 this.y = nextY;
 
-                this.completeDrawing(grid);
+                this.completeDrawing(grid, enemy);
             }
         }
     }
 
-    completeDrawing(grid) {
-        
-        grid.completeAreaCapture();
+    completeDrawing(grid, enemy) {
+
+        grid.completeAreaCapture(enemy, this);
 
         this.pathArray = [];
         this.protection = true;
@@ -111,17 +111,17 @@ export class Player {
 
         // Safe green, draw yellow, if win game draw blue
         if (this.winGame) {
-            ctx.fillStyle = "#00ffee"; 
+            ctx.fillStyle = "#00ffee";
         } else {
             ctx.fillStyle = this.protection ? "#34ef05" : "#ffff00";
         }
-        
+
         ctx.fillRect(
-            this.x * cellSize - offset, 
-            this.y * cellSize - offset, 
-            this.size, 
+            this.x * cellSize - offset,
+            this.y * cellSize - offset,
+            this.size,
             this.size
         );
-        
+
     }
 }

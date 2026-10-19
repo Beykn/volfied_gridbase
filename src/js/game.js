@@ -5,11 +5,11 @@ import { Enemy } from './Enemy.js';
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const GRID_WIDTH = 300;   
-const GRID_HEIGHT = 200;  
-const CELL_SIZE = 4;      
+const GRID_WIDTH = 300;
+const GRID_HEIGHT = 200;
+const CELL_SIZE = 4;
 
-const MARGIN = 20; 
+const MARGIN = 20;
 
 canvas.width = (GRID_WIDTH * CELL_SIZE) + (MARGIN * 2);   // 1200 + 40 = 1240 px
 canvas.height = (GRID_HEIGHT * CELL_SIZE) + (MARGIN * 2); // 800 + 40 = 840 px
@@ -26,13 +26,13 @@ const keys = {
     ArrowDown: false,
     ArrowLeft: false,
     ArrowRight: false
-    
+
 };
 
 window.addEventListener("keydown", (e) => {
     if (e.code === "Space") {
         keys.Space = true;
-        e.preventDefault(); 
+        e.preventDefault();
     }
     if (keys.hasOwnProperty(e.key)) keys[e.key] = true;
 });
@@ -40,15 +40,15 @@ window.addEventListener("keydown", (e) => {
 window.addEventListener("keyup", (e) => {
     if (e.code === "Space") {
         keys.Space = false;
-        e.preventDefault(); 
+        e.preventDefault();
     }
     if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
 });
 
 function update() {
-    player.update(keys, grid);
+    player.update(keys, grid, enemy, player);
     enemy.update(grid, player);
-    
+
 }
 
 function draw() {
@@ -67,9 +67,25 @@ function draw() {
 }
 
 function gameLoop() {
+    if (player.winGame) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.save();
+        ctx.translate(MARGIN, MARGIN);
+        grid.draw(ctx);
+        player.draw(ctx, CELL_SIZE);
+        ctx.restore();
+
+        ctx.fillStyle = "#00ffee";
+        ctx.font = "32px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("CONGURACULATINS !\n YOU WON !", canvas.width / 2, canvas.height / 2);
+        return;
+    }
+
     update();
     draw();
-    
+
     setTimeout(() => {
         requestAnimationFrame(gameLoop);
     }, 1000 / 30);

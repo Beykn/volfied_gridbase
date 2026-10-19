@@ -7,21 +7,24 @@ export class Enemy {
 
         // Assign a random movement 
         this.angle = Math.random() * Math.PI * 2; // Random angle in radians
-        
+
         // Calculate velocity components for x and y axes based on movement angle
         this.vx = Math.cos(this.angle) * this.speed;
         this.vy = Math.sin(this.angle) * this.speed;
 
         this.bullets = [];     // Array holding active bullets
         this.moveTimer = 30; // controls the enemy movement 
-       
+
     }
 
     update(grid, player) {
+        let gridX = Math.floor(this.x);
+        let gridY = Math.floor(this.y);
+
 
         //  If there is a bullet on the screen , the enemy does not move
         if (this.bullets.length > 0) {
-            
+
             this.handleShooting(grid, player);
             return;
         }
@@ -30,7 +33,7 @@ export class Enemy {
         if (this.moveTimer > 0) {
             this.moveTimer--; // enemy movement timer decreases by 1 each frame
 
-            
+
             let nextX = this.x + (this.vx / grid.cellSize);
             let nextY = this.y + (this.vy / grid.cellSize);
 
@@ -55,45 +58,22 @@ export class Enemy {
             }
         } // If the movement timer has reached 0 and there are no bullets on the screen, the enemy shoots a new bullet
         else if (this.moveTimer <= 0 && this.bullets.length === 0) {
-                this.handleShooting(grid, player); // New bullet is shot
+            this.handleShooting(grid, player); // New bullet is shot
         }
 
-        if(this.checkEnemyLocation(grid, this)){
-            console.log("Enemy is in the deactive area!");
-            player.winGame = true;
-            this.bullets = [];
-
-            return;
+        if (grid.getState(gridX, gridY) === 3) {
+            player.winGame = true; 
+            this.bullets = [];     
+            return;                
         }
-
-            
     }
-    
-    checkEnemyLocation(grid, enemy) {
-        // Calculate the size of the enemy in grid cells based on its radius and the grid cell size
-        let enemySizeInGrid = (enemy.radius * 2) / grid.cellSize;
 
-        // Enemy grid coordinations
-        let pointsToCheck = [
-            { x: Math.floor(enemy.x), y: Math.floor(enemy.y) }, 
-            { x: Math.floor(enemy.x + enemySizeInGrid), y: Math.floor(enemy.y) }, 
-            { x: Math.floor(enemy.x), y: Math.floor(enemy.y + enemySizeInGrid) }, 
-            { x: Math.floor(enemy.x + enemySizeInGrid), y: Math.floor(enemy.y + enemySizeInGrid) } 
-        ];
 
-        for (let p of pointsToCheck) {
-            if (grid.getState(p.x, p.y) === 3) { // STATE_DEACTIVE = 3
-                return true; // Deactive area
-            }
-        }
-
-        return false;
-    }
 
     isCellSolid(grid, gx, gy) {
         // Out-of-bounds map coordinates are treated as solid obstacles
         if (gx < 0 || gx >= grid.cols || gy < 0 || gy >= grid.rows) return true;
-        
+
         let cellState = grid.getState(gx, gy);
         // Bounces off 1 (Edge) and 3 (Deactive Zone) cells
         return cellState === 1 || cellState === 3;
@@ -118,7 +98,7 @@ export class Enemy {
     handleShooting(grid, player) {
         // If there are no bullets on the screen and the movement timer has expired, the enemy shoots a new bullet in a random direction
         if (this.bullets.length === 0 && this.moveTimer <= 0) {
-            let bulletAngle = Math.random() *Math.PI * 2;
+            let bulletAngle = Math.random() * Math.PI * 2;
             this.bullets.push({
                 x: this.x,
                 y: this.y,
@@ -127,7 +107,7 @@ export class Enemy {
             });
         }
 
-        
+
 
         // Update the position of each bullet and check for collisions with the grid or the player
         for (let i = this.bullets.length - 1; i >= 0; i--) {
@@ -142,27 +122,27 @@ export class Enemy {
             if (this.isCellSolid(grid, bx, by)) {
                 this.bullets.splice(i, 1);
                 // Reset the movement timer to allow the enemy to move again after shooting
-                this.moveTimer = 30; 
+                this.moveTimer = 30;
                 continue;
             }
 
-        // Check if the bullet collides with the player. If it does, reset the player and clear the path.
-        // Calculate the player's bounding box in grid coordinates, considering the player's size and the grid cell size
-        const playerWidthInGrid = player.size / grid.cellSize; // 30 / 30 = 1 hücre
-        const offset = (player.size - grid.cellSize) / (2 * grid.cellSize);
+            // Check if the bullet collides with the player. If it does, reset the player and clear the path.
+            // Calculate the player's bounding box in grid coordinates, considering the player's size and the grid cell size
+            const playerWidthInGrid = player.size / grid.cellSize; // 30 / 30 = 1 hücre
+            const offset = (player.size - grid.cellSize) / (2 * grid.cellSize);
 
-        // Calculate the player's bounding box in grid coordinates
-        const pMinX = player.x - offset;
-        const pMaxX = player.x + playerWidthInGrid - offset;
-        const pMinY = player.y - offset;
-        const pMaxY = player.y + playerWidthInGrid - offset;
+            // Calculate the player's bounding box in grid coordinates
+            const pMinX = player.x - offset;
+            const pMaxX = player.x + playerWidthInGrid - offset;
+            const pMinY = player.y - offset;
+            const pMaxY = player.y + playerWidthInGrid - offset;
 
-        // Check if the bullet is within the player's bounding box. If it is, handle the player hit and remove the bullet.
-        if (!player.protection && b.x >= pMinX && b.x <= pMaxX && b.y >= pMinY && b.y <= pMaxY) {
-            this.handlePlayerHit(grid, player); // Oyuncuyu sıfırlar ve başa gönderir
-            this.bullets.splice(i, 1);
-            return;
-        }
+            // Check if the bullet is within the player's bounding box. If it is, handle the player hit and remove the bullet.
+            if (!player.protection && b.x >= pMinX && b.x <= pMaxX && b.y >= pMinY && b.y <= pMaxY) {
+                this.handlePlayerHit(grid, player); // Oyuncuyu sıfırlar ve başa gönderir
+                this.bullets.splice(i, 1);
+                return;
+            }
 
             // Check if the bullet collides with the player's path (STATE_PATH). If it does, reset the player and clear the path.
             if (player.pathArray) {
@@ -170,7 +150,7 @@ export class Enemy {
                     if (p.x === bx && p.y === by) {
                         this.handlePlayerHit(grid, player);
                         this.bullets.splice(i, 1);
-                        this.moveTimer = 30; 
+                        this.moveTimer = 30;
                         return;
                     }
                 }
@@ -194,13 +174,13 @@ export class Enemy {
         }
 
         player.x = startPoint ? startPoint.x : 0;
-        player.y = startPoint ? startPoint.y : 0; 
+        player.y = startPoint ? startPoint.y : 0;
 
         // Reset player state and return player to safe zone (Stage 1)
         player.pathArray = [];
         player.protection = true;
-        
-        
+
+
     }
 
 
