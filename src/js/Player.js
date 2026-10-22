@@ -88,7 +88,6 @@ export class Player {
             }
             else if (targetState === STATE_EDGE || targetState === STATE_PATH) {
 
-                // Son ulaşılan hücreyi de diziye/grid'e dâhil edip çizimi bitir
                 this.x = nextX;
                 this.y = nextY;
 
