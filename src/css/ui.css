@@ -1,0 +1,38 @@
+#sidebar-ui {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 180px; 
+    flex-shrink: 0;
+}
+
+.ui-card {
+    background-color: #1e1e1e;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.ui-label {
+    font-size: 13px;
+    color: #888;
+    font-weight: bold;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.ui-value {
+    font-size: 22px;
+    font-weight: bold;
+    color: #00ffcc;
+}
+
+#livesVal {
+    color: #ff4757;
+    font-size: 16px;
+}
