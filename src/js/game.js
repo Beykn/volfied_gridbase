@@ -82,9 +82,7 @@ function draw() {
 
     ctx.restore();
 }
-
-function gameLoop() {
-    if (player.winGame) {
+function textScreen(text){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
@@ -96,10 +94,19 @@ function gameLoop() {
         ctx.fillStyle = "#00ffee";
         ctx.font = "32px Arial";
         ctx.textAlign = "center";
-        ctx.fillText("CONGRATULATIONS !\n YOU WON !", canvas.width / 2, canvas.height / 2);
+
+        ctx.fillText(text , canvas.width / 2, canvas.height / 2);
+}
+function gameLoop() {
+    if (player.winGame) {
+        textScreen("CONGRATULATIONS! YOU WON !");
         return;
     }
-
+    if(timeLeft == 0){
+        textScreen("SOORY! YOU LOST!");
+        return;
+    }
+    
     update();
     draw();
 
