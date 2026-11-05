@@ -158,29 +158,37 @@ export class Enemy {
         }
     }
 
-    handlePlayerHit(grid, player) {
-        // Reset all drawn Path (2) cells back to Empty (0) state
+    handlePlayerHit(grid, player, uiManager){
+        if (player.lives > 0) {
+            player.lives--; // Decrease life by 1
+        }
+
+        const livesVal = document.getElementById("livesVal");
+        if (livesVal) {
+            livesVal.innerHTML = "❤️ ".repeat(player.lives);
+        }
+
+        if (uiManager && typeof uiManager.updateLives === 'function') {
+            uiManager.updateLives(player.lives);
+        }
+
+        if (player.lives <= 0) {
+            player.gameOver = true;
+        }
+
+        // Reset drawn path and player position
         if (player.pathArray) {
             for (let p of player.pathArray) {
                 grid.setState(p.x, p.y, 0);
             }
         }
 
-        // Reset the player position , moves the player to the point where the drawing started
         let startPoint = player.pathArray && player.pathArray.length > 0 ? player.pathArray[0] : null;
-
-        if (startPoint) {
-            console.log("Başlangıç Noktası X:", startPoint.x, "Y:", startPoint.y);
-        }
-
         player.x = startPoint ? startPoint.x : 0;
         player.y = startPoint ? startPoint.y : 0;
 
-        // Reset player state and return player to safe zone (Stage 1)
         player.pathArray = [];
         player.protection = true;
-
-
     }
 
 

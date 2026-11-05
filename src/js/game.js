@@ -26,12 +26,12 @@ let lives = 3;
 let timeLeft = 180; 
 
 // 3. Geri sayım sayacı
-setInterval(() => {
+const timerInterval = setInterval(() => {
     if (timeLeft > 0) {
         timeLeft--;
         uiManager.updateTimer(timeLeft);
-    } else {
-        // TODO: game over
+    }else {
+        clearInterval(timerInterval);
     }
 }, 1000);
 
@@ -62,11 +62,13 @@ window.addEventListener("keyup", (e) => {
 
 function update() {
     player.update(keys, grid, enemy, player);
-    enemy.update(grid, player);
+    enemy.update(grid, player, uiManager);
 
     uiManager.updateScore(score);
-    uiManager.updateLives(lives);
+    uiManager.updateLives(player.lives);
 }
+
+
 
 function draw() {
     
@@ -75,6 +77,8 @@ function draw() {
 
     ctx.save();
     ctx.translate(MARGIN, MARGIN);
+
+    grid.draw(ctx);
 
     grid.draw(ctx);
     player.draw(ctx, CELL_SIZE);
@@ -102,14 +106,19 @@ function gameLoop() {
         textScreen("CONGRATULATIONS! YOU WON !");
         return;
     }
-    if(timeLeft == 0){
-        textScreen("SOORY! YOU LOST!");
+    if(timeLeft == 0 || player.gameOver){
+        clearInterval(timerInterval);
+        textScreen("GAME OVER!");
         return;
     }
-    
-    update();
+    // if gameover true , display gameover text and stop the game loop
+    if (player.gameOver) {
+        clearInterval(timerInterval);
+        textScreen("GAME OVER!");
+        return;
+    }
+    update(); 
     draw();
-
     setTimeout(() => {
         requestAnimationFrame(gameLoop);
     }, 1000 / 30);

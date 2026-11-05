@@ -13,7 +13,7 @@ export class Grid {
         this.matrix = Array.from({ length: this.rows }, () =>
             new Array(this.cols).fill(STATE_EMPTY)
         );
-
+        
         this.initBoundary();
     }
 

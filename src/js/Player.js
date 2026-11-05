@@ -6,10 +6,9 @@ export class Player {
         this.y = y;
         this.protection = true; // safe or not 
         this.pathArray = [];    // path array
-
         this.winGame = false; // win game or not
-
         this.size = 30; //player size
+        this.lives = 3; // player lives
     }
 
     update(keys, grid, enemy) {
