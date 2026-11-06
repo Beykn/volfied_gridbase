@@ -1,0 +1,25 @@
+canvas {
+    width: 1240px;
+    height: 840px;
+    border: 3px solid #444;
+    background-color: #000000;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    display: block;
+}
+
+#canvas-container {
+    width: 100%;
+    min-width: 0;
+    justify-self: end;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 3px solid #444;
+    background-color: #000;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+}

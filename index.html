@@ -3,38 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volfied Grid-Based </title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-
-        canvas {
-            border: 3px solid #444;
-            background-color: #000000;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
-        }
-    </style>
+    <title>Volfied Grid-Based Area Capture</title>
+    
+    <link rel="stylesheet" href="src/css/main.css">
+    <link rel="stylesheet" href="src/css/ui.css">
+    <link rel="stylesheet" href="src/css/canvas.css">
 </head>
 <body>
 
-    <h1>Grid-Based Area Capture (300x200)</h1>
-    
-    <!--  We got 300x200 Grid cell . If we scale it 4px every cell Canvas will be 1200x800 px . -->
-    <canvas id="gameCanvas" width="1200" height="800"></canvas>
+    <h1 class="game-title">Grid-Based Area Capture (300x200)</h1>
+
+    <!-- Main Container: Holds the Left Panel and Right Canvas Side by Side -->
+    <div id="game-container">
+        
+        <!-- Left Side: Timer, Lives, and Score Panel (Vertical Column) -->
+        <div id="sidebar-ui">
+            <div class="ui-card">
+                <span class="ui-label">TIME</span>
+                <span id="timerVal" class="ui-value">180</span>
+            </div>
+
+            <div class="ui-card">
+                <span class="ui-label">LIVES</span>
+                <span id="livesVal" class="ui-value">❤️ ❤️ ❤️</span>
+            </div>
+
+            <div class="ui-card">
+                <span class="ui-label">SCORE</span>
+                <span id="scoreVal" class="ui-value">0.0</span>
+            </div>
+        </div>
+
+        <!-- Right Side: Game Screen (Canvas) -->
+        <div id="canvas-container">
+            <canvas id="gameCanvas" width="1240" height="840"></canvas>
+        </div>
+
+    </div>
 
     <script type="module" src="src/js/game.js"></script>
 </body>
