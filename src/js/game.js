@@ -19,7 +19,7 @@ canvas.height = (GRID_HEIGHT * CELL_SIZE) + (MARGIN * 2); // 800 + 40 = 840 px
 
 const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
 const player = new Player(0, 0);
-const enemy = new Enemy(150, 100, 15, 5);
+const enemy = new Enemy(150, 100, 20, 5);
 const uiManager = new UIManager();
 const blockManager = new EdgeBlockManager();
 

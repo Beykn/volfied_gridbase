@@ -93,8 +93,8 @@ export class EdgeBlockManager {
     }
 
     draw(ctx, cellSize) {
-        const depthSize = cellSize * 10;     
-        const thicknessSize = cellSize * 10; 
+        const depthSize = cellSize * 5;     
+        const thicknessSize = cellSize * 5; 
 
         for (let block of this.blocks) {
             ctx.fillStyle = block.color;
