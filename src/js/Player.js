@@ -90,7 +90,7 @@ export class Player {
                 this.x = nextX;
                 this.y = nextY;
 
-                this.completeDrawing(grid, enemy);
+                return this.completeDrawing(grid, enemy);
             }
         }
     }
@@ -101,6 +101,7 @@ export class Player {
 
         this.pathArray = [];
         this.protection = true;
+        return true;
     }
 
     draw(ctx, cellSize) {
