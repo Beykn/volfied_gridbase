@@ -7,6 +7,9 @@ export class EdgeBlockManager {
         this.state = 'WAITING'; // WAITING or ACTIVE 
         this.waitDuration = 300;   // 10 sec (30 FPS * 10)
         this.activeDuration = 150;  // 5 sec (30 FPS * 5)
+
+        this.image = new Image();
+        this.image.src = "src/assets/block.png";
     }
 
     // 5 block create in random edge cell and direction
@@ -116,7 +119,11 @@ export class EdgeBlockManager {
                 drawHeight = depthSize;    
             }
 
-            ctx.fillRect(drawX, drawY, drawWidth, drawHeight);
+            if (this.image.complete && this.image.naturalWidth !== 0) {
+                ctx.drawImage(this.image, drawX, drawY, drawWidth, drawHeight);
+            } else {
+                ctx.fillRect(drawX, drawY, drawWidth, drawHeight);
+            }
         }
     }
 }
