@@ -105,8 +105,8 @@ export class Enemy {
             this.bullets.push({
                 x: this.x,
                 y: this.y,
-                vx: Math.cos(bulletAngle) * 0.5,
-                vy: Math.sin(bulletAngle) * 0.5
+                vx: Math.cos(bulletAngle) * 2, // Bullet speed is set to 2 grid cells per frame
+                vy: Math.sin(bulletAngle) * 2
             });
         }
 
