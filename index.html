@@ -11,6 +11,23 @@
 </head>
 <body>
 
+    <!-- GİRİŞ EKRANI (START SCREEN) -->
+    <div id="start-screen">
+        <div class="start-card">
+            <div class="instructions">
+                <p><strong> How to play ? </strong></p>
+                <ul>
+                    <li><strong>Arrow Keys:</strong> Move safely on the edges.</li>
+                    <li><strong>Goal:</strong> Trap the enemy in 20% of the area or less to win the game!</li>
+                    <li><strong>Space + Arrow Keys:</strong> Go into the empty space to start drawing.</li>
+                    <li><strong>Close Area:</strong> Connect your line back to an edge or your own path to capture the area!</li>
+                    <li><strong>Watch Out:</strong> Don't hit enemies or bullets while drawing, or you will lose a life!</li>
+                </ul>
+            </div>
+            <button id="startButton">START GAME</button>
+        </div>
+    </div>
+
     <h1 class="game-title">Grid-Based Area Capture</h1>
 
     <!-- Main Container: Holds the Left Panel and Right Canvas Side by Side -->
@@ -33,6 +50,7 @@
                 <span id="scoreVal" class="ui-value">0.0</span>
             </div>
         </div>
+
 
         <!-- Right Side: Game Screen (Canvas) -->
         <div id="canvas-container">

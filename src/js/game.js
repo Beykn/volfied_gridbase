@@ -11,7 +11,6 @@ const ctx = canvas.getContext("2d");
 const GRID_WIDTH = 300;
 const GRID_HEIGHT = 200;
 const CELL_SIZE = 4;
-
 const MARGIN = 20;
 
 canvas.width = (GRID_WIDTH * CELL_SIZE) + (MARGIN * 2);   // 1200 + 40 = 1240 px
@@ -24,19 +23,10 @@ const uiManager = new UIManager();
 const blockManager = new EdgeBlockManager();
 
 // (Score, Lives, Timer)
-let score = 0.0;
-let lives = 3;
+let score = 0;
 let timeLeft = 180;
-
-// Start the timer countdown
-const timerInterval = setInterval(() => {
-    if (timeLeft > 0) {
-        timeLeft--;
-        uiManager.updateTimer(timeLeft);
-    } else {
-        clearInterval(timerInterval);
-    }
-}, 1000);
+let gameStarted = false; // Flag to check if the game has started
+let timerInterval = null; // Declare timerInterval in the outer scope so it can be cleared later
 
 // keys
 const keys = {
@@ -48,6 +38,7 @@ const keys = {
 };
 
 window.addEventListener("keydown", (e) => {
+    if (!gameStarted) return; // Ignore key presses if the game hasn't started yet
     if (e.code === "Space") {
         keys.Space = true;
         e.preventDefault();
@@ -61,6 +52,24 @@ window.addEventListener("keyup", (e) => {
         e.preventDefault();
     }
     if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
+});
+
+// Start button event listener
+document.getElementById("startButton").addEventListener("click", () => {
+    document.getElementById("start-screen").style.display = "none";
+    gameStarted = true;
+
+    //start the timer countdown
+    const timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            uiManager.updateTimer(timeLeft);
+        } else {
+            clearInterval(timerInterval);
+        }
+    }, 1000);
+
+    gameLoop();
 });
 
 function update() {
@@ -85,9 +94,7 @@ function update() {
     uiManager.updateLives(player.lives);
 }
 
-
 function draw() {
-
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -101,6 +108,7 @@ function draw() {
     blockManager.draw(ctx, CELL_SIZE);
     ctx.restore();
 }
+
 function textScreen(text) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -116,7 +124,10 @@ function textScreen(text) {
 
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 }
+
 function gameLoop() {
+
+    if (!gameStarted) return;
     if (player.winGame) {
         clearInterval(timerInterval); 
         textScreen("CONGRATULATIONS! YOU WON !");
@@ -139,5 +150,3 @@ function gameLoop() {
         requestAnimationFrame(gameLoop);
     }, 1000 / 30);
 }
-
-gameLoop();
