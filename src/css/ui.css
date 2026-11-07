@@ -1,8 +1,8 @@
 #sidebar-ui {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    width: 180px; 
+    gap: 12px; /* space between 2 continer */
+    width: 130px; /* Fixed width for the sidebar */
     flex-shrink: 0;
 }
 
@@ -10,7 +10,7 @@
     background-color: #1e1e1e;
     border: 2px solid #333;
     border-radius: 8px;
-    padding: 16px 12px;
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +19,7 @@
 }
 
 .ui-label {
-    font-size: 13px;
+    font-size: 10px;
     color: #888;
     font-weight: bold;
     margin-bottom: 6px;
@@ -27,12 +27,12 @@
 }
 
 .ui-value {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
     color: #00ffcc;
 }
 
 #livesVal {
     color: #ff4757;
-    font-size: 16px;
+    font-size: 14px;
 }

@@ -9,14 +9,15 @@ canvas {
 }
 
 #canvas-container {
-    width: 100%;
+    flex: 1;
     min-width: 0;
-    justify-self: end;
+    display: flex;
+    justify-content: center;
 }
 
 #gameCanvas {
     display: block;
-    width: 100%;
+    width: min(100%, calc((100dvh - 120px) * 1.47619));
     height: auto;
     border: 3px solid #444;
     background-color: #000;

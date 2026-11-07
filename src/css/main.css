@@ -31,5 +31,4 @@ body {
     display: flex;
     flex-direction: row; /* Arranged side by side as Left and Right  */
     align-items: flex-start;
-    gap: 24px; /* space between 2 continer */
 }
