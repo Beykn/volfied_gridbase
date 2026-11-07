@@ -7,8 +7,11 @@ export class Player {
         this.protection = true; // safe or not 
         this.pathArray = [];    // path array
         this.winGame = false; // win game or not
-        this.size = 30; //player size
+        this.size = 52; //player size
         this.lives = 3; // player lives
+
+        this.image = new Image();
+        this.image.src = "src/assets/player.png";
     }
 
     update(keys, grid, enemy) {
@@ -90,7 +93,7 @@ export class Player {
                 this.x = nextX;
                 this.y = nextY;
 
-                this.completeDrawing(grid, enemy);
+                return this.completeDrawing(grid, enemy);
             }
         }
     }
@@ -101,25 +104,39 @@ export class Player {
 
         this.pathArray = [];
         this.protection = true;
+        return true;
     }
 
     draw(ctx, cellSize) {
 
         const offset = (this.size - cellSize) / 2;
 
-        // Safe green, draw yellow, if win game draw blue
-        if (this.winGame) {
-            ctx.fillStyle = "#00ffee";
+        if (this.image.complete && this.image.naturalWidth !== 0) {
+            ctx.drawImage(
+                this.image,
+                (this.x * cellSize) - offset,
+                (this.y * cellSize) - offset,
+                this.size,
+                this.size
+            );
         } else {
-            ctx.fillStyle = this.protection ? "#34ef05" : "#ffff00";
+            // Safe green, draw yellow, if win game draw blue
+            if (this.winGame) {
+                ctx.fillStyle = "#00ffee";
+            } else {
+                ctx.fillStyle = this.protection ? "#34ef05" : "#ffff00";
+            } 
+            
+            ctx.fillRect(
+                this.x * cellSize - offset,
+                this.y * cellSize - offset,
+                this.size,
+                this.size
+            );
         }
 
-        ctx.fillRect(
-            this.x * cellSize - offset,
-            this.y * cellSize - offset,
-            this.size,
-            this.size
-        );
+
+
 
     }
 }

@@ -15,6 +15,9 @@ export class Enemy {
         this.bullets = [];     // Array holding active bullets
         this.moveTimer = 30; // controls the enemy movement 
 
+        this.image = new Image();
+        this.image.src = "src/assets/enemy.png";
+
     }
 
     update(grid, player) {
@@ -62,9 +65,9 @@ export class Enemy {
         }
 
         if (grid.getState(gridX, gridY) === 3) {
-            player.winGame = true; 
-            this.bullets = [];     
-            return;                
+            player.winGame = true;
+            this.bullets = [];
+            return;
         }
     }
 
@@ -102,8 +105,8 @@ export class Enemy {
             this.bullets.push({
                 x: this.x,
                 y: this.y,
-                vx: Math.cos(bulletAngle) * 0.5,
-                vy: Math.sin(bulletAngle) * 0.5
+                vx: Math.cos(bulletAngle) * 2, // Bullet speed is set to 2 grid cells per frame
+                vy: Math.sin(bulletAngle) * 2
             });
         }
 
@@ -158,7 +161,7 @@ export class Enemy {
         }
     }
 
-    handlePlayerHit(grid, player, uiManager){
+    handlePlayerHit(grid, player, uiManager) {
         if (player.lives > 0) {
             player.lives--; // Decrease life by 1
         }
@@ -194,18 +197,27 @@ export class Enemy {
 
 
     draw(ctx, cellSize) {
-        // Draw Enemy Body (Red/Pink Circle)
-        ctx.fillStyle = "#ff0055";
-        ctx.beginPath();
-        ctx.arc(
-            (this.x * cellSize) + (cellSize / 2),
-            (this.y * cellSize) + (cellSize / 2),
-            this.radius,
-            0,
-            Math.PI * 2
-        );
-        ctx.fill();
-
+        if (this.image.complete && this.image.naturalWidth !== 0) {
+            ctx.drawImage(
+                this.image,
+                (this.x * cellSize) - (this.radius),
+                (this.y * cellSize) - (this.radius),
+                this.radius * 2,
+                this.radius * 2
+            );
+        } else {
+            // Draw Enemy Body (Red/Pink Circle)
+            ctx.fillStyle = "#ff0055";
+            ctx.beginPath();
+            ctx.arc(
+                (this.x * cellSize) + (cellSize / 2),
+                (this.y * cellSize) + (cellSize / 2),
+                this.radius,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }
         // Draw Bullets (Yellow Circles, Radius = 5px)
         ctx.fillStyle = "#ffff00";
         for (let b of this.bullets) {
