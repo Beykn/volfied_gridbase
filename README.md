@@ -94,13 +94,13 @@
 - Check if Enemy or Enemy Bullet hits Path (2). 
 
 - If Enemy hits Path: 
-> 
-     Player loses 1 life. 
 
-     All drawn Path cells change back to Empty (0). 
+    - Player loses 1 life. 
 
-     Player resets to start position and goes back to State 1.
->
+    - All drawn Path cells change back to Empty (0). 
+
+    - Player resets to start position and goes back to State 1.
+
      
 
 **Earned Score:**
